@@ -18,13 +18,18 @@
 
 ## 📌 Overview
 
-OJA3 is a security and privacy tool from the OwlSec suite.
+OJA3 fingerprints TLS clients and servers so you can spot malware, scanners and unusual software on your network. It reads every ClientHello and ServerHello in a packet capture, decodes raw hello hex, or connects to a live server to fingerprint its ServerHello. The resulting hashes are checked against JA3 blocklists such as abuse.ch SSLBL.
 
 ---
 
 ## ✨ Features
 
-- Standalone executable, no Python installation needed.
+- Accurate JA3 (GREASE preserved, checked byte-for-byte against Salesforce pyja3) and JA3S server fingerprints
+- JA4 and JA4S following the FoxIO spec (sorted ciphers/extensions, ALPN, SNI flag)
+- PCAP reader (Ethernet, raw IP, Linux SLL) that extracts every ClientHello and ServerHello
+- Live mode: sends a ClientHello to host:port and fingerprints the server reply
+- Blocklist matching (abuse.ch SSLBL CSV or a plain hash list) plus heuristics for legacy TLS and scanner-like hellos
+- Cipher-suite and extension reference, fingerprint compare mode, and TXT/JSON/MD/CSV/SARIF reports
 
 ---
 
@@ -38,8 +43,13 @@ OJA3 is a security and privacy tool from the OwlSec suite.
 ## 🚀 Usage
 
 ```bash
-./OJA3
+./OJA3                                       # interactive menu
+./OJA3 --pcap capture.pcap --blocklist sslbl_ja3.csv
+./OJA3 --live example.com:443
+./OJA3 --compare <hashA> <hashB>
 ```
+
+Run `./OJA3 --help` for the full list of options.
 
 ---
 
